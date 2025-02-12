@@ -1,4 +1,3 @@
-
 body, html {
     margin: 0;
     padding: 0;
@@ -47,106 +46,98 @@ body, html {
     height: auto;
 }
 
-
-
-
 .menu-container {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     min-width: 300px;
+    color: #ffffff;
 }
 
-.menu1 h1 {
+.menu h1 {
     font-size: 3rem;
-    margin-bottom: 10%;
+    margin-bottom: 30px;
     font-weight: bold;
     font-family: 'Carbo', sans-serif;
     color: #ffffff;
     text-shadow: 0 0 10px rgba(0, 255, 0, 0.90);
 }
 
-.menu1 .btn {
-    width: 20%;
-    padding: 12% 2%;
-    margin: 1% 5%;
-    font-size: 200%;
+/* Style for all buttons in the game menu */
+.btn-primary, .btn-success, .btn-warning {
+    font-family: monospace;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 180%;
+    color: #ffffff;
     text-align: center;
-    background: linear-gradient(135deg, #afffa2, #050f00);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for consistency */
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-.btn {
+    background: none;
+    border: none;
+    transition: transform 0.3s ease;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    padding: 10px 20px;
+    margin: 10px;
     width: 200px;
-    margin: 10px 0;
-    font-size: 1.2rem;
-    text-align: center;
-    background: linear-gradient(135deg, #2e006a, #090424); /* Match the background */
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for consistency */
-    border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-.menu1 .btn:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Lighter hover effect */
-    transform: scale(1.3); /* Slight scale effect on hover */
 }
 
-.btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.3);
+.btn-primary:hover, .btn-success:hover, .btn-warning:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #f5f5f5, #8abf82);
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
-.nickname-input, #roomInfo, #joinExistingRoomSection {
-    text-align: center;
-    margin-top: 20px;
-    display: block;
-}
-
-.nickname-input input, #joinExistingRoomSection input {
-    margin: 10px 0;
+/* Style for input fields */
+.form-control {
+    font-family: monospace;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
     width: 300px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.2); /* Transparent background for inputs */
-    color: white;
-    display: block; /* Ensure they are block-level elements */
-    margin-left: auto; /* Center horizontally */
-    margin-right: auto; /* Center horizontally */
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    margin: 10px auto;
 }
 
-#joinExistingRoomButton {
-    width: 200px;
-    margin: 10px 0;
-    font-size: 1.2rem;
-    text-align: center;
-    background: linear-gradient(135deg, #2e006a, #090424); /* Match the gradient background */
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for consistency */
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
-    #joinExistingRoomButton:hover {
-        background-color: rgba(255, 255, 255, 0.2); /* Lighter hover effect */
-        transform: scale(1.05); /* Slight scale effect on hover */
+.form-control:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.footer-text {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    font-size: 1rem;
-    color: #bbbbff;
+/* Room info and sections */
+#roomInfo, #joinExistingRoomSection {
+    color: #ffffff;
+    margin-top: 20px;
 }
 
-#joinExistingRoomSection{
-    display: none; 
+#roomInfo h3, #joinExistingRoomSection h3 {
+    font-family: 'Carbo', sans-serif;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    margin-bottom: 20px;
 }
 
+/* Canvas styling */
+#localGameCanvas, #onlineGameCanvas {
+    margin: 20px auto;
+    border: 2px solid rgba(0, 255, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+/* Nickname input section */
+.nickname-input h2 {
+    font-family: 'Carbo', sans-serif;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    margin-bottom: 20px;
+}
 
 .button-Profile {
     position: absolute;
@@ -188,7 +179,6 @@ button {
     background: none;
     border: none;
 }
-
 
 .button-Game button {
     position: absolute;
@@ -285,8 +275,6 @@ input:focus {
     background-color: #f0f0f0;
 }
 @media (max-width : 1400px){
-
-
     .logo {
         position: absolute;
         top: 2%;
@@ -335,7 +323,6 @@ input:focus {
         background: none;
         border: none;
     }
-    
     
     .button-Game button {
         position: absolute;

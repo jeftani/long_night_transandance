@@ -403,40 +403,39 @@
 
 <template id="ChooseGame">
     <!-- Main Menu -->
-    <div class="menu-container">
-        <div class="menu text-center" id="menu">
-            <h1>Ping Pong Game</h1>
-            <button id="playLocal" class="btn btn-primary btn-large">Play Local</button>
-            <button id="playOnline" class="btn btn-primary btn-large">Play Online</button>
+    <div class="menu-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+        <div class="menu text-center" id="menu" style="width: 80%; max-width: 600px; margin: 0 auto;">
+            <h1 style="margin-bottom: 30px;">Ping Pong Game</h1>
+            <button id="playLocal" class="btn btn-primary btn-large" style="width: 200px; margin: 10px;">Play Local</button>
+            <button id="playOnline" class="btn btn-primary btn-large" style="width: 200px; margin: 10px;">Play Online</button>
         </div>
     
         <!-- Nickname Input for Local Game -->
-        <div class="nickname-input" id="nicknameInput" style="display: none;">
-            <h2>Enter Player Nicknames</h2>
-            <input type="text" id="player1Name" class="form-control" placeholder="Player 1 Nickname">
-            <input type="text" id="player2Name" class="form-control" placeholder="Player 2 Nickname">
-            <button id="startLocalGame" class="btn btn-success btn-large">Start Game</button>
+        <div class="nickname-input" id="nicknameInput" style="display: none; width: 80%; max-width: 600px; text-align: center;">
+            <h2 style="margin-bottom: 20px;">Enter Player Nicknames</h2>
+            <input type="text" id="player1Name" class="form-control" placeholder="Player 1 Nickname" style="margin: 10px auto; max-width: 300px;">
+            <input type="text" id="player2Name" class="form-control" placeholder="Player 2 Nickname" style="margin: 10px auto; max-width: 300px;">
+            <button id="startLocalGame" class="btn btn-success btn-large" style="margin-top: 20px;">Start Game</button>
         </div>
     
         <!-- Room URL Display -->
-        <div id="roomInfo" style="display: none; text-align: center;">
-            <h3>Room Created!</h3>
-            <p id="roomUrl"></p>
-            <button id="joinRoom" class="btn btn-success btn-large">Join Room</button>
+        <div id="roomInfo" style="display: none; text-align: center; width: 80%; max-width: 600px;">
+            <h3 style="margin-bottom: 20px;">Room Created!</h3>
+            <p id="roomUrl" style="word-break: break-all;"></p>
+            <button id="joinRoom" class="btn btn-success btn-large" style="margin-top: 20px;">Join Room</button>
         </div>
     
         <!-- Join Existing Room -->
-        <div id="joinExistingRoomSection" class="mt-4">
-            <button id="inviteFriend" class="btn btn-primary btn-large">Invite a Friend</button>
-            <h3>Join an Existing Room</h3>
-            <input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL">
-            <button id="joinExistingRoomButton" class="btn btn-warning btn-large mt-2">Join Existing Room</button>
+        <div id="joinExistingRoomSection" style="text-align: center; width: 80%; max-width: 600px; margin-top: 30px;">
+            <button id="inviteFriend" class="btn btn-primary btn-large" style="margin-bottom: 20px;">Invite a Friend</button>
+            <h3 style="margin-bottom: 20px;">Join an Existing Room</h3>
+            <input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL" style="margin: 10px auto; max-width: 300px;">
+            <button id="joinExistingRoomButton" class="btn btn-warning btn-large" style="margin-top: 20px;">Join Existing Room</button>
         </div>
     
-        <!-- Local Game Canvas -->
-		<canvas id="localGameCanvas" width="800" height="600"></canvas>
-        <!-- Online Game Canvas -->
-        <canvas id="onlineGameCanvas" width="800" height="600"></canvas>
+        <!-- Game Canvases -->
+        <canvas id="localGameCanvas" width="800" height="600" style="display: none; margin: 20px auto;"></canvas>
+        <canvas id="onlineGameCanvas" width="800" height="600" style="display: none; margin: 20px auto;"></canvas>
     </div>
     <script src="../JS/PingPong.js"></script>
 </template>
