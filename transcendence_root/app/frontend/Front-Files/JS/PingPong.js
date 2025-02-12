@@ -245,15 +245,6 @@ ctx.shadowColor = '#ff00ff';  // Neon pink glow for player 2
 ctx.fillStyle = '#ff00ff';
 ctx.fillRect(gameState.player2.x, gameState.player2.y, gameState.player2.width, gameState.player2.height);
 
-// Draw ball with neon effect
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#ff0000';  // Neon red glow for the ball
-ctx.beginPath();
-ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
-ctx.fillStyle = '#ff0000';
-ctx.fill();
-ctx.closePath();
-
 // Draw center line (neon effect)
 ctx.shadowBlur = 10;
 ctx.shadowColor = '#00ffff';  // Neon cyan glow for the line
@@ -263,6 +254,18 @@ ctx.beginPath();
 ctx.moveTo(onlineCanvas.width / 2, 0);
 ctx.lineTo(onlineCanvas.width / 2, onlineCanvas.height);
 ctx.stroke();
+
+
+// Draw ball with neon effect
+ctx.shadowBlur = 20;
+ctx.shadowColor = '#ff0000';  // Neon red glow for the ball
+ctx.beginPath();
+ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
+ctx.fillStyle = '#ff0000';
+ctx.fill();
+ctx.closePath();
+
+
 
 // Draw scores with player nicknames
 ctx.shadowBlur = 0;  // Remove shadow for text
