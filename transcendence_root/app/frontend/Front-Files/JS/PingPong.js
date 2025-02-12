@@ -25,7 +25,7 @@ function startLocalGame() {
     let keysPressed = {};
     let gameInterval;  // Store interval ID to clear it when game ends
 
-    function showWinMessage(winner, score1, score2) {
+    function showWinMessage(winner, score1, score2,flag) {
         const overlay = document.getElementById('gameEndOverlay');
         const winnerMessage = document.getElementById('winnerMessage');
         const playAgainButton = document.getElementById('playAgainButton');
@@ -33,7 +33,8 @@ function startLocalGame() {
 
         winnerMessage.textContent = `${winner} wins! Score: ${score1} - ${score2}`;
         overlay.style.display = 'flex';
-
+        if (flag == true)
+        {
         playAgainButton.onclick = () => {
             overlay.style.display = 'none';
             // Reset scores and ball position
@@ -43,6 +44,7 @@ function startLocalGame() {
             // Restart game interval
             if (gameInterval) clearInterval(gameInterval);
             gameInterval = setInterval(updateGame, 1000 / 60);
+        }
         };
     }
 
@@ -132,7 +134,7 @@ function startLocalGame() {
             player2.score++;
             if (player2.score >= 3) {
                 clearInterval(gameInterval);
-                showWinMessage(player2Name, player1.score, player2.score);
+                showWinMessage(player2Name, player1.score, player2.score,1);
             } else {
                 resetBall();
             }
@@ -246,7 +248,7 @@ function startOnlineGame(URLws) {
 
             // Display the winner and score in an alert
             //alert(`Game Over! ${winner} wins! Final score: Player 1: ${score.player1} - Player 2: ${score.player2}`);
-            showWinMessage(winner,score.player1,score.player2);
+            showWinMessage(winner,score.player1,score.player2,0);
             // Optionally, you can redirect the user or reset the game state after the alert
             // For example:
             // window.location.href = '/new-game';  // Redirect to a new game page
