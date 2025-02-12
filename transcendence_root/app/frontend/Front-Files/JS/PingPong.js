@@ -1,3 +1,4 @@
+
 const menu = document.getElementById('menu');
 const nicknameInput = document.getElementById('nicknameInput');
 const playLocalButton = document.getElementById('playLocal');
@@ -7,9 +8,6 @@ const onlineCanvas = document.getElementById('onlineGameCanvas');
 const playOnlineButton = document.getElementById('playOnline');
 const player1NameInput = document.getElementById('player1Name');
 const player2NameInput = document.getElementById('player2Name');
-const onlineGameMenu = document.getElementById('onlineGameMenu');
-const roomInfo = document.getElementById('roomInfo');
-const joinExistingRoomSection = document.getElementById('joinExistingRoomSection');
 
 let player1Name = 'Player 1';
 let player2Name = 'Player 2';
@@ -136,6 +134,7 @@ ctx.fillText(`${player2Name}: ${player2.score}`, localCanvas.width - 160, 30);
 
 //********** Invite Friend Logic **********
 const inviteFriendButton = document.getElementById('inviteFriend');
+const roomInfoDiv = document.getElementById('roomInfo');
 const roomUrlElement = document.getElementById('roomUrl');
 const joinRoomButton = document.getElementById('joinRoom');
 const existingRoomUrlInput = document.getElementById('existingRoomUrl');
@@ -168,7 +167,7 @@ if (data.ws_url) {
     // Display WebSocket URL for both players
     const lastElement = data.ws_url.split('/').filter(Boolean).pop();
     roomUrlElement.textContent = `Room CODE: ${lastElement}`;
-    roomInfo.style.display = 'block';
+    roomInfoDiv.style.display = 'block';
 
     // Add a listener for the "Join Room" button
     joinRoomButton.onclick = () => {
@@ -290,57 +289,17 @@ ctx.fillText(`Player 2: ${gameState.score.player2}`, onlineCanvas.width - 120, 3
 }
 
 // ********** Event Listeners **********
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all the elements
-    const menu = document.getElementById('menu');
-    const nicknameInput = document.getElementById('nicknameInput');
-    const onlineGameMenu = document.getElementById('onlineGameMenu');
-    const roomInfo = document.getElementById('roomInfo');
-    const joinExistingRoomSection = document.getElementById('joinExistingRoomSection');
-    const localGameCanvas = document.getElementById('localGameCanvas');
-    const onlineGameCanvas = document.getElementById('onlineGameCanvas');
-
-    // Play Local button click handler
-    document.getElementById('playLocal').addEventListener('click', function() {
-        menu.style.display = 'none';
-        nicknameInput.style.display = 'flex';
-        onlineGameMenu.style.display = 'none';
-    });
-
-    // Play Online button click handler
-    document.getElementById('playOnline').addEventListener('click', function() {
-        menu.style.display = 'none';  // Hide main menu
-        onlineGameMenu.style.display = 'block';  // Show online game menu container
-        joinExistingRoomSection.style.display = 'block';  // Show join existing room section
-        nicknameInput.style.display = 'none';  // Hide nickname input
-        onlineCanvas.style.display = 'none';  // Hide online canvas initially
-    });
-
-    // Start Local Game button click handler
-    document.getElementById('startLocalGame').addEventListener('click', function() {
-        nicknameInput.style.display = 'none';
-        localGameCanvas.style.display = 'block';
-        // Add your game initialization code here
-    });
-
-    // Join Room button click handler
-    document.getElementById('joinRoom').addEventListener('click', function() {
-        roomInfo.style.display = 'none';  // Hide room info
-        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
-        onlineCanvas.style.display = 'block';  // Show canvas
-    });
-
-    // Invite Friend button click handler
-    document.getElementById('inviteFriend').addEventListener('click', function() {
-        roomInfo.style.display = 'block';  // Show room info
-        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
-        onlineCanvas.style.display = 'none';  // Hide canvas
-    });
-
-    // Join Existing Room button click handler
-    document.getElementById('joinExistingRoomButton').addEventListener('click', function() {
-        roomInfo.style.display = 'none';  // Hide room info
-        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
-        onlineCanvas.style.display = 'block';  // Show canvas
-    });
+playLocalButton.addEventListener('click', () => {
+    menu.style.display = 'none';
+    nicknameInput.style.display = 'flex';
 });
+
+startLocalGameButton.addEventListener('click', () => {
+player1Name = player1NameInput.value || 'Player 1';
+player2Name = player2NameInput.value || 'Player 2';
+
+startLocalGame();
+});
+
+
+playOnlineButton.addEventListener('click', startOnlineGame);
