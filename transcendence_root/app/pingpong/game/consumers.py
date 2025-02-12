@@ -119,9 +119,9 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
             game_state['score']['player1'] += 1
             await self.reset_ball(game_state)
 
-        if game_state['score']['player1'] >= 4:
+        if game_state['score']['player1'] >= 3:
             await self.end_match('player1', game_state)
-        elif game_state['score']['player2'] >= 4:
+        elif game_state['score']['player2'] >= 3:
             await self.end_match('player2', game_state)
 
         await self.set_game_state(game_state)

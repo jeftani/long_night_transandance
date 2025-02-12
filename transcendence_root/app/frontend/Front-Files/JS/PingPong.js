@@ -23,56 +23,76 @@ function startLocalGame() {
     let player2 = { x: 780, y: 225, width: 10, height: 150, score: 0 };
     let ball = { x: 300, y: 200, radius: 10, dx: 3, dy: 3 };
     let keysPressed = {};
+    let gameInterval;  // Store interval ID to clear it when game ends
 
-function renderGame() {
-ctx.clearRect(0, 0, localCanvas.width, localCanvas.height);
+    function showWinMessage(winner, score1, score2) {
+        const overlay = document.getElementById('gameEndOverlay');
+        const winnerMessage = document.getElementById('winnerMessage');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const backToMenuButton = document.getElementById('backToMenuButton');
 
-// Background (Space Theme)
-const gradient = ctx.createRadialGradient(localCanvas.width / 2, localCanvas.height / 2, 0, localCanvas.width / 2, localCanvas.height / 2, localCanvas.width); // back
-gradient.addColorStop(0, '#000000');  // Dark center (space)
-gradient.addColorStop(1, '#2a1a7e');  // Lighter edges (space theme)
-ctx.fillStyle = gradient;
-ctx.fillRect(0, 0, localCanvas.width, localCanvas.height);
+        winnerMessage.textContent = `${winner} wins! Score: ${score1} - ${score2}`;
+        overlay.style.display = 'flex';
 
-// Draw players with neon effect
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#00ff00';  // Neon green glow for player 1
-ctx.fillStyle = '#00ff00';
-ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
+        playAgainButton.onclick = () => {
+            overlay.style.display = 'none';
+            // Reset scores and ball position
+            player1.score = 0;
+            player2.score = 0;
+            resetBall();
+            // Restart game interval
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(updateGame, 1000 / 60);
+        };
+    }
 
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#ff00ff';  // Neon pink glow for player 2
-ctx.fillStyle = '#ff00ff';
-ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
+    function renderGame() {
+        ctx.clearRect(0, 0, localCanvas.width, localCanvas.height);
 
-// Draw center line (neon effect)
-ctx.shadowBlur = 10;
-ctx.shadowColor = '#00ffff';  // Neon cyan glow for the line
-ctx.strokeStyle = '#ffffff';  // White for the line itself
-ctx.lineWidth = 2;
-ctx.beginPath();
-ctx.moveTo(localCanvas.width / 2, 0);
-ctx.lineTo(localCanvas.width / 2, localCanvas.height);
-ctx.stroke();
+        // Background (Space Theme)
+        const gradient = ctx.createRadialGradient(localCanvas.width / 2, localCanvas.height / 2, 0, localCanvas.width / 2, localCanvas.height / 2, localCanvas.width); // back
+        gradient.addColorStop(0, '#000000');  // Dark center (space)
+        gradient.addColorStop(1, '#2a1a7e');  // Lighter edges (space theme)
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, localCanvas.width, localCanvas.height);
 
-// Draw ball with neon effect
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#ff0000';  // Neon red glow for the ball
-ctx.beginPath();
-ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-ctx.fillStyle = '#ff0000';
-ctx.fill();
-ctx.closePath();
+        // Draw players with neon effect
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#00ff00';  // Neon green glow for player 1
+        ctx.fillStyle = '#00ff00';
+        ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
 
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#ff00ff';  // Neon pink glow for player 2
+        ctx.fillStyle = '#ff00ff';
+        ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
 
+        // Draw center line (neon effect)
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00ffff';  // Neon cyan glow for the line
+        ctx.strokeStyle = '#ffffff';  // White for the line itself
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(localCanvas.width / 2, 0);
+        ctx.lineTo(localCanvas.width / 2, localCanvas.height);
+        ctx.stroke();
 
-// Draw scores with player nicknames
-ctx.shadowBlur = 0;  // Remove shadow for text
-ctx.fillStyle = '#ffffff';
-ctx.font = '20px Arial';
-ctx.fillText(`${player1Name}: ${player1.score}`, 20, 30);
-ctx.fillText(`${player2Name}: ${player2.score}`, localCanvas.width - 160, 30);
-}
+        // Draw ball with neon effect
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#ff0000';  // Neon red glow for the ball
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff0000';
+        ctx.fill();
+        ctx.closePath();
+
+        // Draw scores with player nicknames
+        ctx.shadowBlur = 0;  // Remove shadow for text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '20px Arial';
+        ctx.fillText(`${player1Name}: ${player1.score}`, 20, 30);
+        ctx.fillText(`${player2Name}: ${player2.score}`, localCanvas.width - 160, 30);
+    }
 
     function updateGame() {
         ball.x += ball.dx;
@@ -100,12 +120,22 @@ ctx.fillText(`${player2Name}: ${player2.score}`, localCanvas.width - 160, 30);
 
         if (ball.x + ball.radius > localCanvas.width) {
             player1.score++;
-            resetBall();
+            if (player1.score >= 3) {
+                clearInterval(gameInterval);
+                showWinMessage(player1Name, player1.score, player2.score);
+            } else {
+                resetBall();
+            }
         }
 
         if (ball.x - ball.radius < 0) {
             player2.score++;
-            resetBall();
+            if (player2.score >= 3) {
+                clearInterval(gameInterval);
+                showWinMessage(player2Name, player1.score, player2.score);
+            } else {
+                resetBall();
+            }
         }
 
         if (keysPressed['w']) player1.y = Math.max(0, player1.y - 5);
@@ -127,7 +157,7 @@ ctx.fillText(`${player2Name}: ${player2.score}`, localCanvas.width - 160, 30);
     document.addEventListener('keyup', (e) => (keysPressed[e.key] = false));
 
     renderGame();
-    setInterval(updateGame, 1000 / 60);
+    gameInterval = setInterval(updateGame, 1000 / 60);
 }
 
 
