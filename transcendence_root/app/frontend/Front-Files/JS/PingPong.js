@@ -309,10 +309,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Play Online button click handler
     document.getElementById('playOnline').addEventListener('click', function() {
-        menu.style.display = 'none';
-        onlineGameMenu.style.display = 'block';
-        joinExistingRoomSection.style.display = 'flex';
-        nicknameInput.style.display = 'none';
+        menu.style.display = 'none';  // Hide main menu
+        onlineGameMenu.style.display = 'block';  // Show online game menu container
+        joinExistingRoomSection.style.display = 'block';  // Show join existing room section
+        nicknameInput.style.display = 'none';  // Hide nickname input
+        onlineCanvas.style.display = 'none';  // Hide online canvas initially
     });
 
     // Start Local Game button click handler
@@ -324,21 +325,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Join Room button click handler
     document.getElementById('joinRoom').addEventListener('click', function() {
-        roomInfo.style.display = 'none';
-        onlineGameCanvas.style.display = 'block';
-        // Add your online game initialization code here
+        roomInfo.style.display = 'none';  // Hide room info
+        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
+        onlineCanvas.style.display = 'block';  // Show canvas
     });
 
     // Invite Friend button click handler
     document.getElementById('inviteFriend').addEventListener('click', function() {
-        roomInfo.style.display = 'flex';
-        joinExistingRoomSection.style.display = 'none';
+        roomInfo.style.display = 'block';  // Show room info
+        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
+        onlineCanvas.style.display = 'none';  // Hide canvas
     });
 
     // Join Existing Room button click handler
     document.getElementById('joinExistingRoomButton').addEventListener('click', function() {
-        joinExistingRoomSection.style.display = 'none';
-        onlineGameCanvas.style.display = 'block';
-        // Add your room joining code here
+        roomInfo.style.display = 'none';  // Hide room info
+        joinExistingRoomSection.style.display = 'none';  // Hide join existing room section
+        onlineCanvas.style.display = 'block';  // Show canvas
     });
 });
