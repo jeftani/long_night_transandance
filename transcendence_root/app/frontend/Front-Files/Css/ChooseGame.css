@@ -175,13 +175,22 @@ body, html {
 }
 
 /* Canvas styling */
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
 #localGameCanvas, #onlineGameCanvas {
-    display: block;
-    margin: 20px auto;
-    max-width: 100%;
+    background: transparent;
     border: 2px solid rgba(0, 255, 0, 0.3);
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 800/600; /* Maintain aspect ratio */
 }
 
 /* Nickname input section */
