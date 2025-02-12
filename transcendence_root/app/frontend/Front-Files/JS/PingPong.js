@@ -305,10 +305,25 @@ playOnlineButton.addEventListener('click', () => {
     nicknameInput.style.display = 'none';
 });
 
-joinRoomButton.onclick = () => {
+joinRoomButton.addEventListener('click', () => {
+    // Get the room code from the displayed text
+    const roomCode = roomUrlElement.textContent.split('Room CODE: ')[1];
+    if (!roomCode) {
+        alert("Room code not found. Please try creating the room again.");
+        return;
+    }
+
+    // Construct the WebSocket URL
+    const wsUrl = `ws://127.0.0.1:8000/api/ws/game/${roomCode}/`;
+
+    // Hide menus
     document.getElementById('joinExistingRoomSection').style.display = 'none';
     document.getElementById('roomInfo').style.display = 'none';
     document.getElementById('onlineGameMenu').style.display = 'none';
+    
+    // Show game canvas
     onlineCanvas.style.display = 'block';
-    startOnlineGame(data.ws_url);
-};
+    
+    // Start the game with constructed WebSocket URL
+    startOnlineGame(wsUrl);
+});
