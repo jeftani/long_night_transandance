@@ -1,23 +1,20 @@
-# Use an official Python image
+# Base image - uses Python 3.11 slim version
 FROM python:3.11-slim
 
-# Set working directory inside the container
+# Sets /app as the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file from app/pingpong
+# Copies requirements.txt from your local machine to the container
 COPY app/pingpong/requirements.txt .
 
-
-
-# Install Python dependencies
+# Installs all Python packages listed in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the Django project files into the container
-COPY app/chatproject .
+# Copies your Django project from app/pingpong to the container
+COPY app/pingpong .
 
-
-# Expose the Django development server port
+# Opens port 8000 in the container
 EXPOSE 8000
 
-# Command to run the Django development server
+# Default command that runs when container starts
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

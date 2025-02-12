@@ -56,6 +56,8 @@ function navigateTo(content, cssFile, path) {
 }
 
 function HomeContent(){
+    const searchBox = document.querySelector(".search-box1");
+    searchBox.style.display = "block";
     var typed = new Typed(".dynamic-h1", {
         strings : ["A New Place <br> For Professional<br> <span class='pingpong'>Ping Pong</span> <br> Gamers ."],
         typeSpeed : 50,
@@ -75,6 +77,8 @@ function HomeContent(){
 }
 
 function GameContent(){
+    const searchBox = document.querySelector(".search-box1");
+    searchBox.style.display = "block";
     document.getElementById('to_tournoi').addEventListener('click', (e) => {
         e.preventDefault();
         navigateTo('tournoiContent', '../Css/Tournoi.css',  '/Tournoi');
@@ -89,9 +93,13 @@ function GameContent(){
 
 
 function SettingContent(){
-    fetch('http://localhost:8000/profile/update/', {
+    const searchBox = document.querySelector(".search-box1");
+    searchBox.style.display = "block";
+    fetch('http://localhost:8000/api/auth/me/', {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -100,14 +108,12 @@ function SettingContent(){
         return response.json();
     })
     .then(data => {
-
-        console.log(data.image_link);
+        console.log(data);
         const profileImg = document.getElementById('profile');
-        profileImg.src = data.image_link;
+        profileImg.src = data.image_link || '';
         document.getElementById("fullName").textContent = data.full_name || "N/A";
         document.getElementById("userName").textContent = data.username || "N/A";
         document.getElementById("Mail").textContent = data.email || "N/A";
-        document.getElementById("Avatar").textContent = data.avatar || "N/A";
         document.getElementById("City").textContent = data.city || "N/A";
     })
     .catch(error => {
@@ -120,6 +126,8 @@ function SettingContent(){
 }
 
 function EditContent() {
+    const searchBox = document.querySelector(".search-box1");
+    searchBox.style.display = "block";
     const info = document.querySelector('.Infos');
     const imageInput = document.getElementById('profile-update');
     const fileNameDisplay = document.getElementById("file-name");
@@ -133,7 +141,7 @@ function EditContent() {
 
     info.addEventListener("submit", async (event) => {
         event.preventDefault();
-
+        // while(true){}
         const formData = new FormData(info);
         const file = imageInput.files[0];
 
@@ -172,11 +180,11 @@ function EditContent() {
         console.log("JSON Data to send:", jsonData);
 
         // 3️⃣ Send JSON data
-        fetch('http://localhost:8000/profile/update/', {
-            method: 'POST',
-            credentials: 'include',
+        fetch('http://localhost:8000/api/auth/me/', {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
             body: JSON.stringify(jsonData)
         })
@@ -232,6 +240,8 @@ function LoadContent(templateId){
     dynamicContent.appendChild(templateContent);
 
     if(templateId === 'openningContent'){
+        const searchBox = document.querySelector(".search-box1");
+        searchBox.style.display = "none";
         document.getElementById('clickme').addEventListener('click', (e) => {
             navigateTo('firstContent', '../Css/first_page.css',  '/LoginPage')
         });
@@ -245,23 +255,38 @@ function LoadContent(templateId){
     if(templateId === 'EditContent')
         EditContent();
     if(templateId === 'Regester'){
-        const info = document.querySelector('.Info');
-
-        info.addEventListener("submit", event =>{
-            console.log(10000);
+        const searchBox = document.querySelector(".search-box1");
+        searchBox.style.display = "none";
+        console.log("dkhel register");
+        const form = document.querySelector('.Info');
+        const info = document.getElementById('Register');
+        console.log(info);
+        info.addEventListener("click", (event) => {
+            console.log('registeeeer');
             event.preventDefault();
 
-            const dataForm = new FormData(info);
-            const data = new URLSearchParams(dataForm);
+            const dataForm = new FormData(form);
+
+            const formObject = {};
+        // dataForm.forEach((value, key) => {
+        //     formObject[key] = value;
+        // });
+        const password = dataForm.get("password");
+        dataForm.append("password2", password);
+        const data = new URLSearchParams(dataForm);
+        
             //URL should be replaced by the correct URL 
-            fetch('http://localhost:8000/login/', {
+            fetch('http://localhost:8000/api/auth/register/', {
                 method : 'POST',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body : data
-            }).then(res => res.json())
+            })
+            .then(res => {
+                console.log(res);
+                return res.json()})
             .then(data => console.log(data))
             .catch(error => console.log(error));
         });
@@ -279,13 +304,17 @@ function LoadContent(templateId){
     }
     if(templateId === 'firstContent'){
         console.log('first');
-        const info = document.querySelector('.Info');
-
-        info.addEventListener("submit", event =>{
-            console.log(10000);
+        const form = document.querySelector('.Info');
+        const info = document.getElementById('Login');
+        const searchBox = document.querySelector(".search-box1");
+        // searchBox.style.display = "block";
+        searchBox.style.display = "none";
+        info.addEventListener("click", (event) =>{
+            console.log('logiiiiiin');
+            
             event.preventDefault();
 
-            const dataForm = new FormData(info);
+            const dataForm = new FormData(form);
             console.log(dataForm.get('email'));
             console.log(dataForm.get('password'));
             const data = new URLSearchParams(dataForm);
@@ -307,7 +336,10 @@ function LoadContent(templateId){
             navigateTo('Regester', '../Css/Regester.css',  '/Regester');
         });
     }
-    if(templateId === 'tournoiContent')
+    if(templateId === 'tournoiContent'){
+        const searchBox = document.querySelector(".search-box1");
+        searchBox.style.display = "block";
+    }
         if(templateId === 'mobile'){
             document.getElementById('back-home').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -456,59 +488,67 @@ function searchForUsers() {
 
 }
 function checkUserLoginFromBackend() {
-    // fetch('http://localhost:8000/api/check-authentication/', {
+    // const token = localStorage.getItem('access_token');
+    // if (!token) {
+    //     navigateTo('openningContent', '../Css/openning.css', '/OpeningPage');
+    //     return;
+    // }
+
+    // fetch('http://localhost:8000/api/auth/me/', {
     //     method: 'GET',
-    //     credentials: 'include',
+    //     headers: {
+    //         'Authorization': `Bearer ${token}`
+    //     }
     // })
-    // .then(response => response.json())
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error('Token invalid');
+    //     }
+    //     return response.json();
+    // })
     // .then(data => {
-            // navigateTo('openningContent', '../Css/openning.css',  '/OpeningPage');
-        // if (data.isLoggedIn) {
-            console.log("User is authenticated!");
-            const path = window.location.pathname;
-            if(path)
-                handleRouting(path);
-            else
-                navigateTo('openningContent', '../Css/openning.css',  '/OpeningPage');
-            document.getElementById('home').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('homeContent', '../Css/Home.css',  '/Home');
-            });
-            document.getElementById('profile').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('ProfileContent', '../Css/Profile.css',  '/Profile');
-            });
-            document.getElementById('game').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('gameContent', '../Css/Game.css',  '/Game');
+        console.log("User is authenticated!");
+        const path = window.location.pathname;
+        
+        if(path)
+            handleRouting(path);
+        else
+            navigateTo('homeContent', '../Css/Home.css', '/Home');
+        document.getElementById('home').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('homeContent', '../Css/Home.css',  '/Home');
+        });
+        document.getElementById('profile').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('ProfileContent', '../Css/Profile.css',  '/Profile');
+        });
+        document.getElementById('game').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('gameContent', '../Css/Game.css',  '/Game');
     
-            });
-            document.getElementById('tournoi').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('tournoiContent', '../Css/Tournoi.css',  '/Tournoi');
+        });
+        document.getElementById('tournoi').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('tournoiContent', '../Css/Tournoi.css',  '/Tournoi');
     
-            });
-            document.getElementById('settings').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('settingContent', '../Css/Setting.css',  '/Settings');
-            });
-            document.getElementById('Chat').addEventListener('click', (e) => {
-                e.preventDefault();
-                navigateTo('ChatContent', '../Css/Chat.css', '/Chat');
-            });
-            document.getElementById('search-input1').addEventListener('click', (e) =>{
-                searchForUsers();
-            })
-        // } 
-        // else {
-        //     console.log(data.isLoggedIn);
-        //     console.log("User is not authenticated");
-        //     navigateTo('openningContent', '../Css/openning.css',  '/OpeningPage');
-        // }
+        });
+        document.getElementById('settings').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('settingContent', '../Css/Setting.css',  '/Settings');
+        });
+        document.getElementById('Chat').addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('ChatContent', '../Css/Chat.css', '/Chat');
+        });
+        document.getElementById('search-input1').addEventListener('click', (e) =>{
+            searchForUsers();
+        })
     // })
-    // .catch(error => {
-    //     console.error('Error checking login status:', error);
-    //     navigateTo('openningContent', '../Css/openning.css',  '/OpeningPage');
+    // .catch(async error => {
+    //     const refreshed = await refreshToken();
+    //     if (!refreshed) {
+    //         navigateTo('openningContent', '../Css/openning.css', '/OpeningPage');
+    //     }
     // });
 }
 
@@ -531,7 +571,7 @@ function handleRouting(path){
             navigateTo('homeContent', '../Css/Home.css', '/Home');
             break;
         case '/Regester':
-            navigateTo('homeContent', '../Css/Home.css', '/Home');
+            navigateTo('Regester', '../Css/Regester.css',  '/Regester');
             break;
         case '/Home':
             navigateTo('homeContent', '../Css/Home.css', '/Home');
@@ -569,5 +609,30 @@ function handleRouting(path){
         default:
             navigateTo('openningContent', '../Css/openning.css',  '/OpeningPage');
             break;
+    }
+}
+
+async function refreshToken() {
+    const refresh = localStorage.getItem('refresh_token');
+    if (!refresh) return false;
+
+    try {
+        const response = await fetch('http://localhost:8000/api/auth/token/refresh/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                refresh: refresh
+            })
+        });
+        const data = await response.json();
+        if (data.access) {
+            localStorage.setItem('access_token', data.access);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        return false;
     }
 }

@@ -2,26 +2,32 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build: ./app
     volumes:
-      - ./app/pingpong:/app  # Correct path to mount manage.py
+      - ./app/pingpong:/app
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - logstash
+      db:
+        condition: service_healthy  # This ensures db is really ready
     environment:
-      - DATABASE_URL=postgres://your_db_user:your_db_password@db:5432/your_db_name
+      - DATABASE_URL=postgres://smbarki:saadmbarki@db:5432/sabdark
 
   db:
+    container_name: db
     image: postgres:13
     environment:
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
-      POSTGRES_DB: your_db_name
+      - POSTGRES_DB=sabdark
+      - POSTGRES_USER=smbarki
+      - POSTGRES_PASSWORD=saadmbarki
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data/
+      - ./app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smbarki -d sabdark"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   logstash:
     image: logstash:7.17.13

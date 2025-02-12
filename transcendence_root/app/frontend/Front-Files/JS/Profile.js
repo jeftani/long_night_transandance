@@ -122,6 +122,8 @@ ScrollforEachContainer('deblockContainer', 'blockList');
     
 
     function updateAchievements() {
+        const searchBox = document.querySelector(".search-box1");
+        searchBox.style.display = "block";
         const playerScore = 26;
 
         const levels = [

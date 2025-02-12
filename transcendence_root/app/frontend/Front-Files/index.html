@@ -43,7 +43,7 @@
 									<label for="formCheck">Remember Me</label>
 								</div>
 								<div class="input-field">
-									<input type="submit" class="input-submit" value="Sign In" required>
+									<button type="button" class="input-submit" id="Login">Sign In</button>
 								</div>
 								<p>Don't have an account? <button id="showRegister">Sign Up</button></p>
 							</div>
@@ -62,7 +62,7 @@
 							<input type="text" name="username" placeholder="Username" class="input-box" id="regUsername" required>
 						</div>
 						<div class="input-field">
-							<input type="text" name="fullname" placeholder="Full Name" class="input-box" id="regFullname" required>
+							<input type="text" name="full_name" placeholder="Full Name" class="input-box" id="regFullname" required>
 						</div>
 						<div class="input-field">
 							<input type="text" name="email" placeholder="Email" class="input-box" id="regEmail"  required>
@@ -78,7 +78,7 @@
 							<label for="formCheck2">Remember Me</label>
 						</div>
 						<div class="input-field">
-							<input type="submit" class="input-submit" value="Sign Up" required>
+							<button type="button" class="input-submit" id="Register">Sign Up</button>
 						</div>
 						<p>Already have an account? <button id="showLogin">Sign In</button></p>
 					</div>
@@ -401,62 +401,62 @@
 			</div>
 		</template>
 
-<template id="ChooseGame">
-    <!-- Main Menu -->
-    <div class="menu-container">
-        <!-- Initial Menu - Only this should be visible at first -->
-        <div class="menu text-center" id="menu">
-            <h1>Ping Pong Game</h1>
-            <div class="button-group">
-                <button id="playLocal" class="btn btn-primary">Play Local</button>
-                <button id="playOnline" class="btn btn-primary">Play Online</button>
-            </div>
-        </div>
-    
-        <!-- Local Game Section - Hidden initially -->
-        <div class="nickname-input" id="nicknameInput" style="display: none;">
-            <h2>Enter Player Nicknames</h2>
-            <div class="input-group">
-                <input type="text" id="player1Name" class="form-control" placeholder="Player 1 Nickname">
-                <input type="text" id="player2Name" class="form-control" placeholder="Player 2 Nickname">
-                <button id="startLocalGame" class="btn btn-success">Start Game</button>
-            </div>
-        </div>
-    
-        <!-- Online Game Sections - Hidden initially -->
-        <div id="onlineGameMenu" style="display: none;">
-            <div id="roomInfo" style="display: none;">
-                <h3>Room Created!</h3>
-                <p id="roomUrl"></p>
-                <button id="joinRoom" class="btn btn-success">Join Room</button>
-            </div>
-        
-            <div id="joinExistingRoomSection" style="display: none;">
-                <div class="button-group">
-                    <button id="inviteFriend" class="btn btn-primary">Invite a Friend</button>
-                </div>
-                <h3>Join an Existing Room</h3>
-                <div class="input-group">
-                    <input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL">
-                    <button id="joinExistingRoomButton" class="btn btn-warning">Join Existing Room</button>
-                </div>
-            </div>
-        </div>
-    
-        <!-- Game Canvases - Hidden initially -->
-        <canvas id="localGameCanvas" width="800" height="600" style="display: none;"></canvas>
-        <canvas id="onlineGameCanvas" width="800" height="600" style="display: none;"></canvas>
-    </div>
-    <div id="gameEndOverlay" style="display: none;">
-        <div class="game-end-container">
-            <h2 id="winnerMessage"></h2>
-            <div class="button-group">
-                <button id="playAgainButton" class="btn btn-primary">Play Again</button>
-            </div>
-        </div>
-    </div>
-    <script src="../JS/PingPong.js"></script>
-</template>
+		<template id="ChooseGame">
+			<!-- Main Menu -->
+			<div class="menu-container">
+				<!-- Initial Menu - Only this should be visible at first -->
+				<div class="menu text-center" id="menu">
+					<h1>Ping Pong Game</h1>
+					<div class="button-group">
+						<button id="playLocal" class="btn btn-primary">Play Local</button>
+						<button id="playOnline" class="btn btn-primary">Play Online</button>
+					</div>
+				</div>
+			
+				<!-- Local Game Section - Hidden initially -->
+				<div class="nickname-input" id="nicknameInput" style="display: none;">
+					<h2>Enter Player Nicknames</h2>
+					<div class="input-group">
+						<input type="text" id="player1Name" class="form-control" placeholder="Player 1 Nickname">
+						<input type="text" id="player2Name" class="form-control" placeholder="Player 2 Nickname">
+						<button id="startLocalGame" class="btn btn-success">Start Game</button>
+					</div>
+				</div>
+			
+				<!-- Online Game Sections - Hidden initially -->
+				<div id="onlineGameMenu" style="display: none;">
+					<div id="roomInfo" style="display: none;">
+						<h3>Room Created!</h3>
+						<p id="roomUrl"></p>
+						<button id="joinRoom" class="btn btn-success">Join Room</button>
+					</div>
+				
+					<div id="joinExistingRoomSection" style="display: none;">
+						<div class="button-group">
+							<button id="inviteFriend" class="btn btn-primary">Invite a Friend</button>
+						</div>
+						<h3>Join an Existing Room</h3>
+						<div class="input-group">
+							<input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL">
+							<button id="joinExistingRoomButton" class="btn btn-warning">Join Existing Room</button>
+						</div>
+					</div>
+				</div>
+			
+				<!-- Game Canvases - Hidden initially -->
+				<canvas id="localGameCanvas" width="800" height="600" style="display: none;"></canvas>
+				<canvas id="onlineGameCanvas" width="800" height="600" style="display: none;"></canvas>
+			</div>
+			<div id="gameEndOverlay" style="display: none;">
+				<div class="game-end-container">
+					<h2 id="winnerMessage"></h2>
+					<div class="button-group">
+						<button id="playAgainButton" class="btn btn-primary">Play Again</button>
+					</div>
+				</div>
+			</div>
+			<script src="../JS/PingPong.js"></script>
+		</template>
 
 		<template id="ChooseAi">
 			<h1> YOU WOULD LIKE TO CHOOSE </h1>

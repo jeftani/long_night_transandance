@@ -91,12 +91,12 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
         if player == 'player1':
             if action == 'move_up' and game_state['player1']['y'] > 0:
                 game_state['player1']['y'] -= game_state['player1']['speed']
-            elif action == 'move_down' and game_state['player1']['y'] < 600 - game_state['player1']['height']:
+            elif action == 'move_down' and game_state['player1']['y'] < 400 - game_state['player1']['height']:
                 game_state['player1']['y'] += game_state['player1']['speed']
         elif player == 'player2':
             if action == 'move_up' and game_state['player2']['y'] > 0:
                 game_state['player2']['y'] -= game_state['player2']['speed']
-            elif action == 'move_down' and game_state['player2']['y'] < 600 - game_state['player2']['height']:
+            elif action == 'move_down' and game_state['player2']['y'] < 400 - game_state['player2']['height']:
                 game_state['player2']['y'] += game_state['player2']['speed']
         await self.set_game_state(game_state)
 
@@ -106,7 +106,7 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
         ball['x'] += ball['vx']
         ball['y'] += ball['vy']
 
-        if ball['y'] - ball['radius'] <= 0 or ball['y'] + ball['radius'] >= 600:
+        if ball['y'] - ball['radius'] <= 0 or ball['y'] + ball['radius'] >= 400:
             ball['vy'] *= -1
 
         if await self.check_paddle_collision(game_state, 'player1') or await self.check_paddle_collision(game_state, 'player2'):
@@ -115,13 +115,14 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
         if ball['x'] - ball['radius'] <= 0:
             game_state['score']['player2'] += 1
             await self.reset_ball(game_state)
-        elif ball['x'] + ball['radius'] >= 800:
+        elif ball['x'] + ball['radius'] >= 600:
             game_state['score']['player1'] += 1
             await self.reset_ball(game_state)
 
-        if game_state['score']['player1'] >= 3:
+        # Check if a player reached a score of 4 to end the match
+        if game_state['score']['player1'] >= 4:
             await self.end_match('player1', game_state)
-        elif game_state['score']['player2'] >= 3:
+        elif game_state['score']['player2'] >= 4:
             await self.end_match('player2', game_state)
 
         await self.set_game_state(game_state)
@@ -135,15 +136,15 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
 
     async def reset_ball(self, game_state):
         ball = game_state['ball']
-        ball['x'], ball['y'] = 400, 300
-        ball['vx'], ball['vy'] = random.choice([-4, 4]), random.choice([-4, 4])
+        ball['x'], ball['y'] = 300, 200
+        ball['vx'], ball['vy'] = random.choice([-3, 3]), random.choice([-3, 3])
         await self.set_game_state(game_state)
 
     async def reset_game(self):
         game_state = {
-            'player1': {'x': 10, 'y': 225, 'width': 10, 'height': 150, 'speed': 20},  # Left paddle
-            'player2': {'x': 780, 'y': 225, 'width': 10, 'height': 150, 'speed': 20},  # Right paddle
-            'ball': {'x': 400, 'y': 300, 'radius': 12, 'vx': 4, 'vy': 4},  # Ball centered
+            'player1': {'x': 30, 'y': 250, 'width': 15, 'height': 120, 'speed': 20},  # Scaled size and position
+            'player2': {'x': 755, 'y': 250, 'width': 15, 'height': 120, 'speed': 20},  # Scaled size and position
+            'ball': {'x': 400, 'y': 300, 'radius': 12, 'vx': 4, 'vy': 4},  # Ball scaled and speed adjusted
             'score': {'player1': 0, 'player2': 0},
         }
         await self.set_game_state(game_state)

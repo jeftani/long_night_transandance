@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-)dlwblp0i22v)$*v502yp#xh(57t@14@e_f&hj#1q44k3s-)0)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # settings.py
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'game',
     'rest_framework',
     'corsheaders',
+    'auth_app',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -78,8 +81,34 @@ TEMPLATES = [
 WSGI_APPLICATION = 'pingpong.wsgi.application'
 ASGI_APPLICATION = "pingpong.asgi.application"
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8080',
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
 
@@ -102,8 +131,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sabdark',
+        'USER': 'smbarki',
+        'PASSWORD': 'saadmbarki',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -148,3 +181,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Add Custom User Model setting
+AUTH_USER_MODEL = 'auth_app.CustomUser'
+
+# Update REST_FRAMEWORK settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'auth_app.authentication.CookieJWTAuthentication',
+    )
+}
+
+# Update JWT settings - remove refresh token
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Increased to 1 day since we won't refresh
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+}
+
+# Add cookie settings
+JWT_COOKIE_NAME = 'access_token'
+JWT_COOKIE_SECURE = False  # Set to True in production with HTTPS
+JWT_COOKIE_SAMESITE = 'Lax'  # Set to 'Strict' in production

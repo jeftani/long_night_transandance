@@ -21,4 +21,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('game.urls')),  # Include your app's URLs here
+    path('api/auth/', include('auth_app.urls')),
 ]
