@@ -35,12 +35,11 @@ function showWinMessage(winner, score1, score2, isLocal = false) {
     } else {
         // For online game
         playAgainButton.style.display = 'none';
-        setTimeout(() => {
+        //setTimeout(() => {
             overlay.style.display = 'none';
             menu.style.display = 'block';
-            onlineCanvas.style.display = 'none';
-            location.reload(); // Refresh the page after showing the message
-        }, 3000); // Show message for 3 seconds before returning to menu
+            onlineCanvas.style.display = 'none';  
+        //}); // Show message for 3 seconds before returning to menu
     }
 }
 
