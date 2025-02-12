@@ -142,8 +142,8 @@ class PingPongGameConsumer(AsyncWebsocketConsumer):
 
     async def reset_game(self):
         game_state = {
-            'player1': {'x': 30, 'y': 250, 'width': 15, 'height': 120, 'speed': 20},  # Scaled size and position
-            'player2': {'x': 755, 'y': 250, 'width': 15, 'height': 120, 'speed': 20},  # Scaled size and position
+            'player1': {'x': 10, 'y': 225, 'width': 10, 'height': 150, 'speed': 20},  # Scaled size and position
+            'player2': {'x': 780, 'y': 225, 'width': 10, 'height': 150, 'speed': 20},  # Scaled size and position
             'ball': {'x': 400, 'y': 300, 'radius': 12, 'vx': 4, 'vy': 4},  # Ball scaled and speed adjusted
             'score': {'player1': 0, 'player2': 0},
         }
