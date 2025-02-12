@@ -404,6 +404,7 @@
 <template id="ChooseGame">
     <!-- Main Menu -->
     <div class="menu-container">
+        <!-- Initial Menu - Only this should be visible at first -->
         <div class="menu text-center" id="menu">
             <h1>Ping Pong Game</h1>
             <div class="button-group">
@@ -412,7 +413,7 @@
             </div>
         </div>
     
-        <!-- Nickname Input for Local Game -->
+        <!-- Local Game Section - Hidden initially -->
         <div class="nickname-input" id="nicknameInput" style="display: none;">
             <h2>Enter Player Nicknames</h2>
             <div class="input-group">
@@ -422,28 +423,29 @@
             </div>
         </div>
     
-        <!-- Room URL Display -->
-        <div id="roomInfo" style="display: none;">
-            <h3>Room Created!</h3>
-            <p id="roomUrl"></p>
-            <button id="joinRoom" class="btn btn-success">Join Room</button>
+        <!-- Online Game Sections - Hidden initially -->
+        <div id="onlineGameMenu" style="display: none;">
+            <div id="roomInfo" style="display: none;">
+                <h3>Room Created!</h3>
+                <p id="roomUrl"></p>
+                <button id="joinRoom" class="btn btn-success">Join Room</button>
+            </div>
+        
+            <div id="joinExistingRoomSection" style="display: none;">
+                <div class="button-group">
+                    <button id="inviteFriend" class="btn btn-primary">Invite a Friend</button>
+                </div>
+                <h3>Join an Existing Room</h3>
+                <div class="input-group">
+                    <input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL">
+                    <button id="joinExistingRoomButton" class="btn btn-warning">Join Existing Room</button>
+                </div>
+            </div>
         </div>
     
-        <!-- Join Existing Room -->
-        <div id="joinExistingRoomSection">
-            <div class="button-group">
-                <button id="inviteFriend" class="btn btn-primary">Invite a Friend</button>
-            </div>
-            <h3>Join an Existing Room</h3>
-            <div class="input-group">
-                <input type="text" id="existingRoomUrl" class="form-control" placeholder="Enter Room URL">
-                <button id="joinExistingRoomButton" class="btn btn-warning">Join Existing Room</button>
-            </div>
-        </div>
-    
-        <!-- Game Canvases -->
-        <canvas id="localGameCanvas" width="800" height="600"></canvas>
-        <canvas id="onlineGameCanvas" width="800" height="600"></canvas>
+        <!-- Game Canvases - Hidden initially -->
+        <canvas id="localGameCanvas" width="800" height="600" style="display: none;"></canvas>
+        <canvas id="onlineGameCanvas" width="800" height="600" style="display: none;"></canvas>
     </div>
     <script src="../JS/PingPong.js"></script>
 </template>
