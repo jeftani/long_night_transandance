@@ -12,6 +12,38 @@ let player1Name = 'Player 1';
 let player2Name = 'Player 2';
 let playerRole = '';  // For online game
 
+function showWinMessage(winner, score1, score2, isLocal = false) {
+    const overlay = document.getElementById('gameEndOverlay');
+    const winnerMessage = document.getElementById('winnerMessage');
+    const playAgainButton = document.getElementById('playAgainButton');
+
+    winnerMessage.textContent = `${winner} wins! Score: ${score1} - ${score2}`;
+    overlay.style.display = 'flex';
+
+    if (isLocal) {
+        playAgainButton.style.display = 'block';
+        playAgainButton.onclick = () => {
+            overlay.style.display = 'none';
+            // Reset scores and ball position
+            player1.score = 0;
+            player2.score = 0;
+            resetBall();
+            // Restart game interval
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(updateGame, 1000 / 60);
+        };
+    } else {
+        // For online game
+        playAgainButton.style.display = 'none';
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            menu.style.display = 'block';
+            onlineCanvas.style.display = 'none';
+            location.reload(); // Refresh the page after showing the message
+        }, 3000); // Show message for 3 seconds before returning to menu
+    }
+}
+
 // ********** Local Game Logic **********
 function startLocalGame() {
     menu.style.display = 'none';
@@ -25,37 +57,7 @@ function startLocalGame() {
     let keysPressed = {};
     let gameInterval;  // Store interval ID to clear it when game ends
 
-    function showWinMessage(winner, score1, score2, isLocal = false) {
-        const overlay = document.getElementById('gameEndOverlay');
-        const winnerMessage = document.getElementById('winnerMessage');
-        const playAgainButton = document.getElementById('playAgainButton');
-
-        winnerMessage.textContent = `${winner} wins! Score: ${score1} - ${score2}`;
-        overlay.style.display = 'flex';
-
-        if (isLocal) {
-            playAgainButton.style.display = 'block';
-            playAgainButton.onclick = () => {
-                overlay.style.display = 'none';
-                // Reset scores and ball position
-                player1.score = 0;
-                player2.score = 0;
-                resetBall();
-                // Restart game interval
-                if (gameInterval) clearInterval(gameInterval);
-                gameInterval = setInterval(updateGame, 1000 / 60);
-            };
-        } else {
-            // For online game
-            playAgainButton.style.display = 'none';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                menu.style.display = 'block';
-                onlineCanvas.style.display = 'none';
-                location.reload(); // Refresh the page after showing the message
-            }, 3000); // Show message for 3 seconds before returning to menu
-        }
-    }
+    
 
     function renderGame() {
         ctx.clearRect(0, 0, localCanvas.width, localCanvas.height);
