@@ -86,23 +86,52 @@ body, html {
 }
 
 /* Style for all buttons in the game menu */
+.menu .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
 .btn-primary, .btn-success, .btn-warning {
     font-family: monospace;
     font-weight: 100;
     font-style: normal;
-    font-size: 180%;
+    font-size: 220%;
     color: #ffffff;
     text-align: center;
-    background: none;
-    border: none;
-    transition: transform 0.3s ease;
+    background: linear-gradient(135deg, #afffa2, #050f00);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    transition: all 0.3s ease;
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
-    padding: 10px 20px;
+    padding: 15px 30px;
     margin: 10px;
-    width: 200px;
+    width: 300px;
+    cursor: pointer;
 }
 
 .btn-primary:hover, .btn-success:hover, .btn-warning:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #f5f5f5, #8abf82);
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    border-color: #8abf82;
+}
+
+/* Special styling for main game buttons */
+#playLocal, #playOnline {
+    font-size: 250%;
+    width: 400px;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, #afffa2, #050f00);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+#playLocal:hover, #playOnline:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
     transform: scale(1.1);
     background: linear-gradient(135deg, #f5f5f5, #8abf82);
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
