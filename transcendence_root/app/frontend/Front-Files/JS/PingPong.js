@@ -1,4 +1,3 @@
-
 const menu = document.getElementById('menu');
 const nicknameInput = document.getElementById('nicknameInput');
 const playLocalButton = document.getElementById('playLocal');
@@ -141,60 +140,56 @@ const existingRoomUrlInput = document.getElementById('existingRoomUrl');
 const joinExistingRoomButton = document.getElementById('joinExistingRoomButton');
 
 inviteFriendButton.addEventListener('click', () => {
-// Make a POST request to generate a room
-const player1 = prompt("Enter your name (Player 1):", player1Name);
-const player2 = prompt("Enter your friend's name (Player 2):", player2Name);
+    // Make a POST request to generate a room
+    const player1 = prompt("Enter your name (Player 1):", player1Name);
+    const player2 = prompt("Enter your friend's name (Player 2):", player2Name);
 
-if (!player1 || !player2) {
-alert("Both player names are required.");
-return;
-}
-document.getElementById('joinExistingRoomSection').style.display = 'none';
-// Send POST request to server to create a new room
-fetch('http://127.0.0.1:8000/api/create-room/', {
-method: 'POST',
-headers: {
-    'Content-Type': 'application/json',
-},
-body: JSON.stringify({
-    player1: player1,
-    player2: player2
-})
-})
-.then(response => response.json())
-.then(data => {
-if (data.ws_url) {
-    // Display WebSocket URL for both players
-    const lastElement = data.ws_url.split('/').filter(Boolean).pop();
-    roomUrlElement.textContent = `Room CODE: ${lastElement}`;
-    roomInfoDiv.style.display = 'block';
-
-    // Add a listener for the "Join Room" button
-    joinRoomButton.onclick = () => {
-        document.getElementById('joinExistingRoomSection').style.display = 'none';
-        let v = true
-        startOnlineGame(data.ws_url , v);
-    };
-}
-})
-.catch(error => {
-console.error('Error creating room:', error);
-alert("An error occurred while creating the room.");
-});
+    if (!player1 || !player2) {
+        alert("Both player names are required.");
+        return;
+    }
+    document.getElementById('joinExistingRoomSection').style.display = 'none';
+    
+    // Send POST request to server to create a new room
+    fetch('http://127.0.0.1:8000/api/create-room/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            player1: player1,
+            player2: player2
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ws_url) {
+            // Display WebSocket URL for both players
+            const lastElement = data.ws_url.split('/').filter(Boolean).pop();
+            roomUrlElement.textContent = `Room CODE: ${lastElement}`;
+            document.getElementById('roomInfo').style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.error('Error creating room:', error);
+        alert("An error occurred while creating the room.");
+    });
 });
 
 //********** Join Existing Room Logic **********
 joinExistingRoomButton.addEventListener('click', () => {
-let existingRoomUrl = existingRoomUrlInput.value;
-if (!existingRoomUrl) {
-alert("Please enter a valid room URL.");
-return;
-}
-else
-{
-existingRoomUrl = "ws://127.0.0.1:8000/api/ws/game/" + existingRoomUrlInput.value + "/"
-startOnlineGame(existingRoomUrl);
-}
+    let existingRoomUrl = existingRoomUrlInput.value;
+    if (!existingRoomUrl) {
+        alert("Please enter a valid room URL.");
+        return;
+    }
+    else {
+        existingRoomUrl = "ws://127.0.0.1:8000/api/ws/game/" + existingRoomUrlInput.value + "/";
+        document.getElementById('joinExistingRoomSection').style.display = 'none';
+        document.getElementById('onlineGameMenu').style.display = 'none';
+        onlineCanvas.style.display = 'block';
+        startOnlineGame(existingRoomUrl);
+    }
 });
 
 //    ********** Online Game Logic **********
@@ -302,4 +297,18 @@ startLocalGame();
 });
 
 
-playOnlineButton.addEventListener('click', startOnlineGame);
+playOnlineButton.addEventListener('click', () => {
+    menu.style.display = 'none';
+    onlineCanvas.style.display = 'none';
+    document.getElementById('onlineGameMenu').style.display = 'block';
+    document.getElementById('joinExistingRoomSection').style.display = 'block';
+    nicknameInput.style.display = 'none';
+});
+
+joinRoomButton.onclick = () => {
+    document.getElementById('joinExistingRoomSection').style.display = 'none';
+    document.getElementById('roomInfo').style.display = 'none';
+    document.getElementById('onlineGameMenu').style.display = 'none';
+    onlineCanvas.style.display = 'block';
+    startOnlineGame(data.ws_url);
+};
