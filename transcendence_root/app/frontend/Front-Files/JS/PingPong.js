@@ -257,7 +257,7 @@ function startOnlineGame(URLws) {
             const score = data.score;    // Get the score
 
             // Display the winner and score in an alert
-            //alert(`Game Over! ${winner} wins! Final score: Player 1: ${score.player1} - Player 2: ${score.player2}`);
+            alert(`Game Over! ${winner} wins! Final score: Player 1: ${score.player1} - Player 2: ${score.player2}`);
             showWinMessage(winner,score.player1,score.player2);
             // Optionally, you can redirect the user or reset the game state after the alert
             // For example:
