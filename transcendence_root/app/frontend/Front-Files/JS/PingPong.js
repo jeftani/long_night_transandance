@@ -19,8 +19,8 @@ function startLocalGame() {
     localCanvas.style.display = 'block';
 
     const ctx = localCanvas.getContext('2d');
-    let player1 = { x: 10, y: 250, width: 10, height: 150, score: 0 };
-    let player2 = { x: 780, y: 250, width: 10, height: 150, score: 0 };
+    let player1 = { x: 10, y: 225, width: 10, height: 150, score: 0 };
+    let player2 = { x: 780, y: 225, width: 10, height: 150, score: 0 };
     let ball = { x: 300, y: 200, radius: 10, dx: 3, dy: 3 };
     let keysPressed = {};
 
