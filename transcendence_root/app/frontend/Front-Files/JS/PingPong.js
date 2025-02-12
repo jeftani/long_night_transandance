@@ -139,7 +139,8 @@ const joinRoomButton = document.getElementById('joinRoom');
 const existingRoomUrlInput = document.getElementById('existingRoomUrl');
 const joinExistingRoomButton = document.getElementById('joinExistingRoomButton');
 
-iinviteFriendButton.addEventListener('click', () => {
+inviteFriendButton.addEventListener('click', () => {
+    // Make a POST request to generate a room
     const player1 = prompt("Enter your name (Player 1):", player1Name);
     const player2 = prompt("Enter your friend's name (Player 2):", player2Name);
 
@@ -149,6 +150,7 @@ iinviteFriendButton.addEventListener('click', () => {
     }
     document.getElementById('joinExistingRoomSection').style.display = 'none';
     
+    // Send POST request to server to create a new room
     fetch('http://127.0.0.1:8000/api/create-room/', {
         method: 'POST',
         headers: {
@@ -162,10 +164,9 @@ iinviteFriendButton.addEventListener('click', () => {
     .then(response => response.json())
     .then(data => {
         if (data.ws_url) {
-            // Store the full WebSocket URL in a data attribute
+            // Display WebSocket URL for both players
             const lastElement = data.ws_url.split('/').filter(Boolean).pop();
             roomUrlElement.textContent = `Room CODE: ${lastElement}`;
-            roomUrlElement.dataset.wsUrl = data.ws_url;  // Store the full URL
             document.getElementById('roomInfo').style.display = 'block';
         }
     })
@@ -173,26 +174,6 @@ iinviteFriendButton.addEventListener('click', () => {
         console.error('Error creating room:', error);
         alert("An error occurred while creating the room.");
     });
-});
-
-// Fix the join room button handler
-joinRoomButton.addEventListener('click', () => {
-    const wsUrl = roomUrlElement.dataset.wsUrl;
-    if (!wsUrl) {
-        alert("Room URL not found. Please try creating the room again.");
-        return;
-    }
-
-    // Hide menus
-    document.getElementById('joinExistingRoomSection').style.display = 'none';
-    document.getElementById('roomInfo').style.display = 'none';
-    document.getElementById('onlineGameMenu').style.display = 'none';
-    
-    // Show game canvas
-    onlineCanvas.style.display = 'block';
-    
-    // Start the game
-    startOnlineGame(wsUrl);
 });
 
 //********** Join Existing Room Logic **********
