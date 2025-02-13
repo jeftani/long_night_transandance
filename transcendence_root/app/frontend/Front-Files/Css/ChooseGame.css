@@ -148,8 +148,9 @@ body, html {
     padding: 8px;
     width: 300px;
     background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    margin: 10px auto;
+    color: #0dff00;
+    margin: 10px auto 10px 20px;
+    height: 40px;
 }
 
 .form-control::placeholder {
