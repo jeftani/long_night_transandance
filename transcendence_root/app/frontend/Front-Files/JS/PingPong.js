@@ -391,6 +391,6 @@ joinRoomButton.addEventListener('click', () => {
         //let currentRound = 1;
 
         playTournament.addEventListener('click', () => {
-            menu.style.display = 'none';
+            //menu.style.display = 'none';
             tournamentInput.style.display = 'block';
         });
