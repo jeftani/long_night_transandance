@@ -1,15 +1,15 @@
-//const menu = document.getElementById('menu');
-//const nicknameInput = document.getElementById('nicknameInput');
+const menu = document.getElementById('menu');
+const nicknameInput = document.getElementById('nicknameInput');
 const playLocalButton = document.getElementById('playLocal');
 const startLocalGameButton = document.getElementById('startLocalGame');
-//const localCanvas = document.getElementById('localGameCanvas');
+const localCanvas = document.getElementById('localGameCanvas');
 const onlineCanvas = document.getElementById('onlineGameCanvas');
 const playOnlineButton = document.getElementById('playOnline');
 const player1NameInput = document.getElementById('player1Name');
 const player2NameInput = document.getElementById('player2Name');
 
-//let player1Name = 'Player 1';
-//let player2Name = 'Player 2';
+let player1Name = 'Player 1';
+let player2Name = 'Player 2';
 let playerRole = '';  // For online game
 
 function showWinMessage(winner, score1, score2, isLocal = false) {
@@ -378,17 +378,17 @@ joinRoomButton.addEventListener('click', () => {
 
 
 
-        const menu = document.getElementById('menu');
-        const nicknameInput = document.getElementById('nicknameInput');
+        //const menu = document.getElementById('menu');
+        //const nicknameInput = document.getElementById('nicknameInput');
         const tournamentInput = document.getElementById('tournamentInput');
         const playTournament = document.getElementById('playTournament');
         const startLocalGame = document.getElementById('startLocalGame');
-        const localCanvas = document.getElementById('localGameCanvas');
+        //const localCanvas = document.getElementById('localGameCanvas');
         const tournamentCanvas = document.getElementById('tournamentCanvas');
         const bracketDetails = document.getElementById('bracketDetails');
 
-        let player1Name = '';
-        let player2Name = '';
+        //let player1Name = '';
+        //let player2Name = '';
         let players = [];
         let currentRound = 1;
 
