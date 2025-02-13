@@ -476,3 +476,11 @@ input:focus {
     max-width: 1200px;
     display: none;
 }
+
+.btn btn-secondary {
+    background: linear-gradient(135deg, #f5f5f5, #8abf82);
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
