@@ -7,10 +7,31 @@ const onlineCanvas = document.getElementById('onlineGameCanvas');
 const playOnlineButton = document.getElementById('playOnline');
 const player1NameInput = document.getElementById('player1Name');
 const player2NameInput = document.getElementById('player2Name');
+const tournamentInput = document.getElementById('tournamentInput');
+const startTournament = document.getElementById('startTournament');
 
 let player1Name = 'Player 1';
 let player2Name = 'Player 2';
 let playerRole = '';  // For online game
+
+let tournamentState = {
+    players: [],
+    currentMatch: null,
+    semifinalWinners: [],
+    currentRound: 'semifinal',
+    matchInProgress: false
+};
+
+function initializeTournament() {
+    // Reset tournament state
+    tournamentState = {
+        players: [],
+        currentMatch: null,
+        semifinalWinners: [],
+        currentRound: 'semifinal',
+        matchInProgress: false
+    };
+}
 
 function showWinMessage(winner, score1, score2, isLocal = false) {
     const overlay = document.getElementById('gameEndOverlay');
@@ -44,7 +65,7 @@ function showWinMessage(winner, score1, score2, isLocal = false) {
 }
 
 // ********** Local Game Logic **********
-function startLocalGame() {
+function startLocalGame(isTournament = false) {
     menu.style.display = 'none';
     nicknameInput.style.display = 'none';
     localCanvas.style.display = 'block';
@@ -170,6 +191,45 @@ function startLocalGame() {
 
     renderGame();
     gameInterval = setInterval(updateGame, 1000 / 60);
+
+    // Add tournament-specific win condition
+    function checkWin() {
+        if (isTournament) {
+            if (player1.score >= 5 || player2.score >= 5) {
+                clearInterval(gameInterval);
+                const winner = player1.score > player2.score ? player1Name : player2Name;
+                showWinMessage(winner, player1.score, player2.score, false);
+                handleTournamentMatchEnd(winner);
+            }
+        } else {
+            // Existing win condition for normal games
+            if (player1.score >= 3 || player2.score >= 3) {
+                clearInterval(gameInterval);
+                const winner = player1.score > player2.score ? player1Name : player2Name;
+                showWinMessage(winner, player1.score, player2.score, true);
+            }
+        }
+    }
+
+    // Add tournament match end handler
+    function handleTournamentMatchEnd(winner) {
+        setTimeout(() => {
+            localCanvas.style.display = 'none';
+            if (tournamentState.currentRound === 'semifinal') {
+                tournamentState.semifinalWinners.push(winner);
+                if (tournamentState.semifinalWinners.length === 2) {
+                    tournamentState.currentRound = 'final';
+                    displayFinalMatch();
+                } else {
+                    displayTournamentBracket();
+                }
+            } else {
+                // Tournament complete
+                displayTournamentWinner(winner);
+            }
+            document.getElementById('tournamentBracket').style.display = 'block';
+        }, 3000);
+    }
 }
 
 
@@ -380,10 +440,6 @@ joinRoomButton.addEventListener('click', () => {
 
         //const menu = document.getElementById('menu');
         //const nicknameInput = document.getElementById('nicknameInput');
-        const tournamentInput = document.getElementById('tournamentInput');
-        const playTournament = document.getElementById('playTournament');
-        const startLocalGame = document.getElementById('startLocalGame');
-        //const localCanvas = document.getElementById('localGameCanvas');
         const tournamentCanvas = document.getElementById('tournamentCanvas');
         const bracketDetails = document.getElementById('bracketDetails');
 
@@ -395,22 +451,25 @@ joinRoomButton.addEventListener('click', () => {
         playTournament.addEventListener('click', () => {
             menu.style.display = 'none';
             tournamentInput.style.display = 'block';
+            initializeTournament();
         });
 
         startTournament.addEventListener('click', () => {
-            players = [
-                document.getElementById('tournament-player1').value,
-                document.getElementById('tournament-player2').value,
-                document.getElementById('tournament-player3').value,
-                document.getElementById('tournament-player4').value
+            const players = [
+                document.getElementById('tournament-player1').value || 'Player 1',
+                document.getElementById('tournament-player2').value || 'Player 2',
+                document.getElementById('tournament-player3').value || 'Player 3',
+                document.getElementById('tournament-player4').value || 'Player 4'
             ];
 
-            if (players.some(player => !player)) {
+            if (players.some(player => !player.trim())) {
                 alert("Please fill all player names");
                 return;
             }
 
+            tournamentState.players = players;
             tournamentInput.style.display = 'none';
+            document.getElementById('tournamentBracket').style.display = 'block';
             displayTournamentBracket();
         });
 
@@ -453,14 +512,6 @@ joinRoomButton.addEventListener('click', () => {
 
 
         // Tournament state management
-let tournamentState = {
-    players: [],
-    currentMatch: null,
-    semifinalWinners: [],
-    currentRound: 'semifinal', // 'semifinal' or 'final'
-    matchInProgress: false
-};
-
 function startTournamentMatch(player1Index, player2Index) {
     tournamentState.currentMatch = {
         player1: tournamentState.players[player1Index],
@@ -475,8 +526,10 @@ function startTournamentMatch(player1Index, player2Index) {
     document.getElementById('tournamentBracket').style.display = 'none';
     localCanvas.style.display = 'block';
     
-    // Start the actual game
-    startTournamentGame();
+    // Initialize and start the game with tournament players
+    player1Name = tournamentState.currentMatch.player1;
+    player2Name = tournamentState.currentMatch.player2;
+    startLocalGame(true); // Add a tournament parameter
 }
 
 function startTournamentGame() 
@@ -663,23 +716,3 @@ function displayTournamentWinner(winner) {
     `;
     document.getElementById('tournamentBracket').style.display = 'block';
 }
-
-// Modify the start tournament button listener
-startTournament.addEventListener('click', () => {
-    tournamentState.players = [
-        document.getElementById('tournament-player1').value || 'Player 1',
-        document.getElementById('tournament-player2').value || 'Player 2',
-        document.getElementById('tournament-player3').value || 'Player 3',
-        document.getElementById('tournament-player4').value || 'Player 4'
-    ];
-
-    if (tournamentState.players.some(player => !player)) {
-        alert("Please fill all player names");
-        return;
-    }
-
-    tournamentInput.style.display = 'none';
-    tournamentState.currentRound = 'semifinal';
-    tournamentState.semifinalWinners = [];
-    displayTournamentBracket();
-});
