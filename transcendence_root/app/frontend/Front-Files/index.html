@@ -414,21 +414,25 @@
 					</div>
 				</div>
 			
+				<div class="tournament-input" id="tournamentInput">
+					<h2>Enter Tournament Players</h2>
+					<input type="text" id="tournament-player1" placeholder="Player 1 Nickname">
+					<input type="text" id="tournament-player2" placeholder="Player 2 Nickname">
+					<input type="text" id="tournament-player3" placeholder="Player 3 Nickname">
+					<input type="text" id="tournament-player4" placeholder="Player 4 Nickname">
+					<button id="startTournament" class="btn btn-success">Create Tournament</button>
+				</div>
+
+
 				<!-- Local Game Section - Hidden initially -->
-				 <div class="nickname-input" id="nicknameInput">
-                <h2>Enter Player Nicknames</h2>
-                <input type="text" id="player1Name" placeholder="Player 1 Nickname">
-                <input type="text" id="player2Name" placeholder="Player 2 Nickname">
-                <button id="startLocalGame" class="btn btn-success">Start Game</button>
-            </div>
-			<div class="tournament-input" id="tournamentInput">
-                <h2>Enter Tournament Players</h2>
-                <input type="text" id="tournament-player1" placeholder="Player 1 Nickname">
-                <input type="text" id="tournament-player2" placeholder="Player 2 Nickname">
-                <input type="text" id="tournament-player3" placeholder="Player 3 Nickname">
-                <input type="text" id="tournament-player4" placeholder="Player 4 Nickname">
-                <button id="startTournament" class="btn btn-success">Create Tournament</button>
-            </div>
+				<div class="nickname-input" id="nicknameInput" style="display: none;">
+					<h2>Enter Player Nicknames</h2>
+					<div class="input-group">
+						<input type="text" id="player1Name" class="form-control" placeholder="Player 1 Nickname">
+						<input type="text" id="player2Name" class="form-control" placeholder="Player 2 Nickname">
+						<button id="startLocalGame" class="btn btn-success">Start Game</button>
+					</div>
+				</div>
 			
 				<!-- Online Game Sections - Hidden initially -->
 				<div id="onlineGameMenu" style="display: none;">
