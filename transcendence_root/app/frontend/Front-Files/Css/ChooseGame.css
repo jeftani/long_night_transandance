@@ -465,4 +465,12 @@ input:focus {
     display: none;
 }
 
-
+.tournament-bracket {
+    background: linear-gradient(135deg, #2e006a, #090424);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    margin: 20px auto;
+    max-width: 1000px;
+    display: none;
+}
