@@ -1,15 +1,15 @@
-const menu = document.getElementById('menu');
-const nicknameInput = document.getElementById('nicknameInput');
+//const menu = document.getElementById('menu');
+//const nicknameInput = document.getElementById('nicknameInput');
 const playLocalButton = document.getElementById('playLocal');
 const startLocalGameButton = document.getElementById('startLocalGame');
-const localCanvas = document.getElementById('localGameCanvas');
+//const localCanvas = document.getElementById('localGameCanvas');
 const onlineCanvas = document.getElementById('onlineGameCanvas');
 const playOnlineButton = document.getElementById('playOnline');
 const player1NameInput = document.getElementById('player1Name');
 const player2NameInput = document.getElementById('player2Name');
 
-let player1Name = 'Player 1';
-let player2Name = 'Player 2';
+//let player1Name = 'Player 1';
+//let player2Name = 'Player 2';
 let playerRole = '';  // For online game
 
 function showWinMessage(winner, score1, score2, isLocal = false) {
@@ -371,4 +371,315 @@ joinRoomButton.addEventListener('click', () => {
     
     // Start the game with constructed WebSocket URL
     startOnlineGame(wsUrl);
+});
+
+
+//tournament mode 
+
+
+
+        const menu = document.getElementById('menu');
+        const nicknameInput = document.getElementById('nicknameInput');
+        const tournamentInput = document.getElementById('tournamentInput');
+        const playTournament = document.getElementById('playTournament');
+        const startLocalGame = document.getElementById('startLocalGame');
+        const localCanvas = document.getElementById('localGameCanvas');
+        const tournamentCanvas = document.getElementById('tournamentCanvas');
+        const bracketDetails = document.getElementById('bracketDetails');
+
+        let player1Name = '';
+        let player2Name = '';
+        let players = [];
+        let currentRound = 1;
+
+        playTournament.addEventListener('click', () => {
+            menu.style.display = 'none';
+            tournamentInput.style.display = 'block';
+        });
+
+        startTournament.addEventListener('click', () => {
+            players = [
+                document.getElementById('tournament-player1').value,
+                document.getElementById('tournament-player2').value,
+                document.getElementById('tournament-player3').value,
+                document.getElementById('tournament-player4').value
+            ];
+
+            if (players.some(player => !player)) {
+                alert("Please fill all player names");
+                return;
+            }
+
+            tournamentInput.style.display = 'none';
+            displayTournamentBracket();
+        });
+
+        function displayTournamentBracket() {
+            bracketDetails.innerHTML = `
+                <div class="matchup">
+                    <h3>${players[0]} vs ${players[1]}</h3>
+                    <button class="btn btn-secondary" onclick="startMatch(0, 1)">Start Match</button>
+                </div>
+                <div class="matchup">
+                    <h3>${players[2]} vs ${players[3]}</h3>
+                    <button class="btn btn-secondary" onclick="startMatch(2, 3)">Start Match</button>
+                </div>
+            `;
+            document.getElementById('tournamentBracket').style.display = 'block';
+        }
+
+        function startMatch(player1Index, player2Index) {
+            alert(`Starting match between ${players[player1Index]} and ${players[player2Index]}`);
+            // Simulate the outcome (for now, randomly pick a winner)
+            const winnerIndex = Math.random() > 0.5 ? player1Index : player2Index;
+            alert(`${players[winnerIndex]} wins!`);
+            
+            // Display the next round, which is the final match
+            if (currentRound === 1) {
+                currentRound = 2;
+                displayFinalMatch(winnerIndex);
+            }
+        }
+
+        function displayFinalMatch(winnerIndex) {
+            bracketDetails.innerHTML = `
+                <div class="matchup">
+                    <h3>${players[0]} vs ${players[1]}</h3>
+                    <h3>Final: ${players[winnerIndex]} vs ${players[3 - winnerIndex]}</h3>
+                    <button class="btn btn-secondary" onclick="startFinalMatch(0, 3)">Start Final Match</button>
+                </div>
+            `;
+        }
+
+
+        // Tournament state management
+let tournamentState = {
+    players: [],
+    currentMatch: null,
+    semifinalWinners: [],
+    currentRound: 'semifinal', // 'semifinal' or 'final'
+    matchInProgress: false
+};
+
+function startTournamentMatch(player1Index, player2Index) {
+    tournamentState.currentMatch = {
+        player1: tournamentState.players[player1Index],
+        player2: tournamentState.players[player2Index],
+        player1Index: player1Index,
+        player2Index: player2Index,
+        score1: 0,
+        score2: 0
+    };
+    
+    // Hide bracket and show game canvas
+    document.getElementById('tournamentBracket').style.display = 'none';
+    localCanvas.style.display = 'block';
+    
+    // Start the actual game
+    startTournamentGame();
+}
+
+function startTournamentGame() 
+{
+    const ctx = localCanvas.getContext('2d');
+    let ballX = localCanvas.width / 2;
+    let ballY = localCanvas.height / 2;
+    let ballSpeedX = 5;
+    let ballSpeedY = 5;
+    let ballradius = 10;
+    let paddleWidth = 10;
+    let paddleHeight = 100;
+    let player1Y = localCanvas.height / 2 - paddleHeight / 2;
+    let player2Y = localCanvas.height / 2 - paddleHeight / 2;
+    
+    function draw() {
+        if (!tournamentState.matchInProgress) return;
+        
+        ctx.clearRect(0, 0, localCanvas.width, localCanvas.height);
+        
+         // Background (Space Theme)
+        const gradient = ctx.createRadialGradient(localCanvas.width / 2, localCanvas.height / 2, 0, localCanvas.width / 2, localCanvas.height / 2, localCanvas.width); // back
+        gradient.addColorStop(0, '#000000');  // Dark center (space)
+        gradient.addColorStop(1, '#2a1a7e');  // Lighter edges (space theme)
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, localCanvas.width, localCanvas.height);
+
+        // Draw players with neon effect
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#00ff00';  // Neon green glow for player 1
+        ctx.fillStyle = '#00ff00';
+        ctx.fillRect(0, player1Y, paddleWidth, paddleHeight);
+        ctx.fillRect(localCanvas.width - paddleWidth, player2Y, paddleWidth, paddleHeight);
+
+        // Draw ball with neon effect
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#ff0000';  // Neon red glow for the ball
+        ctx.beginPath();
+        ctx.arc(ballX, ballY, ballradius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff0000';
+        ctx.fill();
+        ctx.closePath();
+        
+         // Draw center line (neon effect)
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00ffff';  // Neon cyan glow for the line
+        ctx.strokeStyle = '#ffffff';  // White for the line itself
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(localCanvas.width / 2, 0);
+        ctx.lineTo(localCanvas.width / 2, localCanvas.height);
+        ctx.stroke();
+
+        // Draw scores
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '24px Arial';
+        ctx.fillText(`${tournamentState.currentMatch.player1}: ${tournamentState.currentMatch.score1}`, 50, 30);
+        ctx.fillText(`${tournamentState.currentMatch.player2}: ${tournamentState.currentMatch.score2}`, localCanvas.width - 200, 30);
+        
+        // Ball movement
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
+        
+        // Ball collision with top/bottom
+        if (ballY <= 0 || ballY >= localCanvas.height) {
+            ballSpeedY = -ballSpeedY;
+        }
+        
+        // Ball collision with paddles
+        if (ballX <= paddleWidth && ballY >= player1Y && ballY <= player1Y + paddleHeight) {
+            ballSpeedX = -ballSpeedX * 1.1; // Increase speed slightly
+        }
+        if (ballX >= localCanvas.width - paddleWidth && ballY >= player2Y && ballY <= player2Y + paddleHeight) {
+            ballSpeedX = -ballSpeedX * 1.1; // Increase speed slightly
+        }
+        
+        // Scoring
+        if (ballX <= 0) {
+            tournamentState.currentMatch.score2++;
+            resetBall();
+        }
+        if (ballX >= localCanvas.width) {
+            tournamentState.currentMatch.score1++;
+            resetBall();
+        }
+        
+        // Check for match winner (first to 11 points)
+        if (tournamentState.currentMatch.score1 >= 11 || tournamentState.currentMatch.score2 >= 11) {
+            handleMatchEnd();
+            return;
+        }
+        
+        requestAnimationFrame(draw);
+    }
+    
+    function resetBall() {
+        ballX = localCanvas.width / 2;
+        ballY = localCanvas.height / 2;
+        ballSpeedX = (Math.random() > 0.5 ? 5 : -5);
+        ballSpeedY = (Math.random() * 6) - 3;
+    }
+    
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'w' && player1Y > 0) player1Y -= 20;
+        if (e.key === 's' && player1Y < localCanvas.height - paddleHeight) player1Y += 20;
+        if (e.key === 'ArrowUp' && player2Y > 0) player2Y -= 20;
+        if (e.key === 'ArrowDown' && player2Y < localCanvas.height - paddleHeight) player2Y += 20;
+    });
+    
+    tournamentState.matchInProgress = true;
+    resetBall();
+    draw();
+}
+
+function handleMatchEnd() {
+    tournamentState.matchInProgress = false;
+    localCanvas.style.display = 'none';
+    
+    const winner = tournamentState.currentMatch.score1 > tournamentState.currentMatch.score2 
+        ? tournamentState.currentMatch.player1 
+        : tournamentState.currentMatch.player2;
+    
+    if (tournamentState.currentRound === 'semifinal') {
+        tournamentState.semifinalWinners.push(winner);
+        
+        if (tournamentState.semifinalWinners.length === 2) {
+            // Both semifinals complete, show final match
+            tournamentState.currentRound = 'final';
+            displayFinalMatch();
+        } else {
+            // Show remaining semifinal
+            displayTournamentBracket();
+        }
+    } else {
+        // Tournament complete
+        displayTournamentWinner(winner);
+    }
+}
+
+function displayTournamentBracket() {
+    const remainingMatchIndex = tournamentState.semifinalWinners.length === 0 ? 0 : 1;
+    const player1Index = remainingMatchIndex * 2;
+    const player2Index = remainingMatchIndex * 2 + 1;
+    
+    bracketDetails.innerHTML = `
+        <div class="semifinals">
+            <h3>Semifinals</h3>
+            ${tournamentState.semifinalWinners.length > 0 ? 
+                `<p>Winner of Semifinal 1: ${tournamentState.semifinalWinners[0]}</p>` : ''}
+            <div class="matchup">
+                <h4>${tournamentState.players[player1Index]} vs ${tournamentState.players[player2Index]}</h4>
+                <button class="btn btn-secondary" onclick="startTournamentMatch(${player1Index}, ${player2Index})">
+                    Start Match
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('tournamentBracket').style.display = 'block';
+}
+
+function displayFinalMatch() {
+    bracketDetails.innerHTML = `
+        <div class="final-match">
+            <h3>Championship Match</h3>
+            <div class="matchup">
+                <h4>${tournamentState.semifinalWinners[0]} vs ${tournamentState.semifinalWinners[1]}</h4>
+                <button class="btn btn-secondary" onclick="startTournamentMatch(0, 1)">
+                    Start Final Match
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('tournamentBracket').style.display = 'block';
+}
+
+function displayTournamentWinner(winner) {
+    bracketDetails.innerHTML = `
+        <div class="tournament-winner">
+            <h3>🏆 Tournament Champion 🏆</h3>
+            <h2>${winner}</h2>
+            <button class="btn btn-primary" onclick="location.reload()">New Tournament</button>
+        </div>
+    `;
+    document.getElementById('tournamentBracket').style.display = 'block';
+}
+
+// Modify the start tournament button listener
+startTournament.addEventListener('click', () => {
+    tournamentState.players = [
+        document.getElementById('tournament-player1').value || 'Player 1',
+        document.getElementById('tournament-player2').value || 'Player 2',
+        document.getElementById('tournament-player3').value || 'Player 3',
+        document.getElementById('tournament-player4').value || 'Player 4'
+    ];
+
+    if (tournamentState.players.some(player => !player)) {
+        alert("Please fill all player names");
+        return;
+    }
+
+    tournamentInput.style.display = 'none';
+    tournamentState.currentRound = 'semifinal';
+    tournamentState.semifinalWinners = [];
+    displayTournamentBracket();
 });
