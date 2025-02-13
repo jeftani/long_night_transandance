@@ -442,7 +442,33 @@
 						</div>
 					</div>
 				</div>
-			
+				<div class="menu text-center" id="menu">
+					<h1>Ping Pong Game</h1>
+					<button id="playTournament" class="btn btn-primary">Tournament Mode</button>
+				</div>
+	
+				<div class="nickname-input" id="nicknameInput">
+					<h2>Enter Player Nicknames</h2>
+					<input type="text" id="player1Name" placeholder="Player 1 Nickname">
+					<input type="text" id="player2Name" placeholder="Player 2 Nickname">
+					<button id="startLocalGame" class="btn btn-success">Start Game</button>
+				</div>
+	
+				<div class="tournament-input" id="tournamentInput">
+					<h2>Enter Tournament Players</h2>
+					<input type="text" id="tournament-player1" placeholder="Player 1 Nickname">
+					<input type="text" id="tournament-player2" placeholder="Player 2 Nickname">
+					<input type="text" id="tournament-player3" placeholder="Player 3 Nickname">
+					<input type="text" id="tournament-player4" placeholder="Player 4 Nickname">
+					<button id="startTournament" class="btn btn-success">Create Tournament</button>
+				</div>
+	
+				<div id="tournamentBracket" class="tournament-bracket">
+					<h2>Tournament Bracket</h2>
+					<div id="bracketDetails">
+						<!-- Placeholder for tournament matches -->
+					</div>
+				</div>
 				<!-- Game Canvases - Hidden initially -->
 				<canvas id="localGameCanvas" width="800" height="600" style="display: none;"></canvas>
 				<canvas id="onlineGameCanvas" width="800" height="600" style="display: none;"></canvas>
@@ -455,6 +481,7 @@
 					</div>
 				</div>
 			</div>
+
 			<script src="../JS/PingPong.js"></script>
 		</template>
 
