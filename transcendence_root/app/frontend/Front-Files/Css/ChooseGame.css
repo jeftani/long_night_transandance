@@ -482,5 +482,5 @@ input:focus {
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
     background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
+    color: red;
 }
