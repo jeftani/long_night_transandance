@@ -402,14 +402,14 @@
 		</template>
 
 		<template id="ChooseGame">
+			<!-- Main Menu -->
 			<div class="menu-container">
-				<!-- Initial Menu -->
+				<!-- Initial Menu - Only this should be visible at first -->
 				<div class="menu text-center" id="menu">
 					<h1>Ping Pong Game</h1>
 					<div class="button-group">
 						<button id="playLocal" class="btn btn-primary">Play Local</button>
 						<button id="playOnline" class="btn btn-primary">Play Online</button>
-						<button id="playTournament" class="btn btn-primary">Tournament Mode</button>
 					</div>
 				</div>
 			
@@ -442,21 +442,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="tournament-input" id="tournamentInput">
-					<h2>Enter Tournament Players</h2>
-					<input type="text" id="tournament-player1" placeholder="Player 1 Nickname">
-					<input type="text" id="tournament-player2" placeholder="Player 2 Nickname">
-					<input type="text" id="tournament-player3" placeholder="Player 3 Nickname">
-					<input type="text" id="tournament-player4" placeholder="Player 4 Nickname">
-					<button id="startTournament" class="btn btn-success">Create Tournament</button>
-				</div>
-	
-				<div id="tournamentBracket" class="tournament-bracket">
-					<h2>Tournament Bracket</h2>
-					<div id="bracketDetails">
-						<!-- Placeholder for tournament matches -->
-					</div>
-				</div>
+			
 				<!-- Game Canvases - Hidden initially -->
 				<canvas id="localGameCanvas" width="800" height="600" style="display: none;"></canvas>
 				<canvas id="onlineGameCanvas" width="800" height="600" style="display: none;"></canvas>
@@ -469,7 +455,6 @@
 					</div>
 				</div>
 			</div>
-
 			<script src="../JS/PingPong.js"></script>
 		</template>
 
