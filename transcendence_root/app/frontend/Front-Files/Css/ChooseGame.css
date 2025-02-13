@@ -477,10 +477,11 @@ input:focus {
     display: none;
 }
 
-.btn btn-secondary {
-    background: linear-gradient(135deg, #f5f5f5, #8abf82);
+.matchup .btn-secondary {
+    font-family: monospace;
+    font-size: 120%;
+    color: #ffffff;
+    background: linear-gradient(135deg, #afffa2, #050f00);
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.90);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: red;
+    transition: transform 0.3s ease;
 }
