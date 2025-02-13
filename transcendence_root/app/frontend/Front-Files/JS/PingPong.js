@@ -379,16 +379,16 @@ joinRoomButton.addEventListener('click', () => {
         //const menu = document.getElementById('menu');
         //const nicknameInput = document.getElementById('nicknameInput');
         const tournamentInput = document.getElementById('tournamentInput');
-        const playTournament = document.getElementById('playTournament');
-        const startLocalGame = document.getElementById('startLocalGame');
+        //const playTournament = document.getElementById('playTournament');
+        //const startLocalGame = document.getElementById('startLocalGame');
         //const localCanvas = document.getElementById('localGameCanvas');
-        const tournamentCanvas = document.getElementById('tournamentCanvas');
-        const bracketDetails = document.getElementById('bracketDetails');
+        //const tournamentCanvas = document.getElementById('tournamentCanvas');
+        //const bracketDetails = document.getElementById('bracketDetails');
 
         //let player1Name = '';
         //let player2Name = '';
-        let players = [];
-        let currentRound = 1;
+        //let players = [];
+        //let currentRound = 1;
 
         playTournament.addEventListener('click', () => {
             menu.style.display = 'none';
