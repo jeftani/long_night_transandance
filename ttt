@@ -1,0 +1,22 @@
+# Django
+DJANGO_SECRET_KEY='django-insecure-)dlwblp0i22v)$*v502yp#xh(57t@14@e_f&hj#1q44k3s-)0)'
+DJANGO_DEBUG=True
+
+# Database
+DB_NAME=sabdark
+DB_USER=smbarki
+DB_PASSWORD=saadmbarki
+DB_HOST=db
+DB_PORT=5432
+
+# 42 OAuth
+INTRA_CLIENT_ID=u-s4t2ud-9081669d6ed323021614e51c032104d886119a4e27c5d547fefd06f15b36039c  # Your actual client ID
+INTRA_CLIENT_SECRET=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  # Your actual client secret
+INTRA_REDIRECT_URI=http://localhost:8000/accounts/42intra/login/callback/
+
+# JWT Settings
+JWT_SECRET_KEY=2b4659a2ec98ba802a58cb9c478bf7377aad4e12c474105c1405ce648adb66b3
+JWT_ACCESS_TOKEN_LIFETIME=24  # hours
+
+# Allowed Hosts
+ALLOWED_HOSTS=localhost,127.0.0.1 
